@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-const Input = ({ user, inputName , Change }) => {
-
+const Input = ({ user, inputName , errors , Change }) => {
   const handleChange = (event) => {
     Change(event.target.name , event.target.value)
   }
@@ -20,7 +19,7 @@ const Input = ({ user, inputName , Change }) => {
         aria-describedby="titleHelp"
       />
       <div id="titleHelp" className="form-text text-danger fw-bold">
-        {/* {user.errors.title} */}
+        {errors[inputName]}
       </div>
     </div>
   );

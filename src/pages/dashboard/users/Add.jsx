@@ -1,6 +1,6 @@
 import Input from "components/Input";
 import useTitle from "components/useTitle";
-// import Joi from "joi";
+import Joi from "joi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -24,17 +24,21 @@ const Add = () => {
     errors: {},
   });
 
-  /*
+
   // joi schema
   const schema = Joi.object({
-    title: Joi.string().required(),
-    body: Joi.string().min(10).required(),
+    name: Joi.string().required(),
+    username: Joi.string().required(),
+    email: Joi.string().email({tlds:{allow: false}}).required(),
+    street: Joi.string().required(),
+    city: Joi.string().required(),
+    company: Joi.string().required(),
   });
 
   // validate
   const validate = () => {
     const errors = {};
-    const myForm = { ...form };
+    const myForm = { ...user };
     delete myForm.errors; // delete errors from the form state to avoid validation for errors
     let result = schema.validate(myForm, { abortEarly: false });
 
@@ -42,20 +46,20 @@ const Add = () => {
       for (const error of result.error.details) {
         errors[error.path] = error.message;
       }
-      setForm({ ...form, errors });
+      setUser({ ...user, errors });
       return true;
     } else {
-      setForm({ ...form, errors: {} });
+      setUser({ ...user, errors: {} });
       return;
     }
   };
 
-*/
+
   // handle submit
   const handleSubmit = (event) => {
     event.preventDefault();
     // return nothing if validate == true and there`s errors otherwise log(submit)
-    // return validate() ? "" : console.log("submit");
+    return validate() ? "" : console.log("submit");
   };
 
   // handle change
@@ -70,12 +74,12 @@ const Add = () => {
     <>
       <h1 className="my-4">add post form</h1>
       <form onSubmit={handleSubmit} className="mb-4">
-        <Input user={user} inputName="name"  Change={handleChange}/>
-        <Input user={user} inputName="username"  Change={handleChange}/>
-        <Input user={user} inputName="email" Change={handleChange}/>
-        <Input user={user} inputName="street" Change={handleChange}/>
-        <Input user={user} inputName="city" Change={handleChange}/>
-        <Input user={user} inputName="company" Change={handleChange}/>
+        <Input user={user} inputName="name"  errors={user.errors} Change={handleChange}/>
+        <Input user={user} inputName="username"  errors={user.errors} Change={handleChange}/>
+        <Input user={user} inputName="email" errors={user.errors} Change={handleChange}/>
+        <Input user={user} inputName="street" errors={user.errors} Change={handleChange}/>
+        <Input user={user} inputName="city" errors={user.errors} Change={handleChange}/>
+        <Input user={user} inputName="company" errors={user.errors} Change={handleChange}/>
         <button type="submit" className="btn btn-primary btn-sm">
           Submit
         </button>
