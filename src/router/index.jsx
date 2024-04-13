@@ -12,10 +12,11 @@ import Users from "../pages/dashboard/Users";
 import Posts from "../pages/dashboard/Posts";
 import Post from "../pages/dashboard/Post";
 import ProtectedRoute from "components/ProtectedRoute";
+import AddPost from "pages/dashboard/AddPost";
 
 // for Protected Routes
-let user = null ;
-// let user = { name : 'kareem' };
+// let user = null ;
+let user = { name : 'kareem' };
 
 
 // router version 6 
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
         <Route path="users" element={<Users />} />
         <Route path="posts" element={<Posts />} />
         <Route path="posts/:id" element={<Post />} />
+        <Route path="posts/add" element={<AddPost />} />
       </Route>
       {/* end nested route */}
     </Route>
