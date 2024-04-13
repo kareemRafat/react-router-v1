@@ -1,3 +1,4 @@
+import Joi from "joi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -15,17 +16,30 @@ const AddPost = () => {
     errors: {},
   });
 
+  // joi schema
+  const schema = Joi.object({
+    title : Joi.string().required() ,
+    body : Joi.string().min(10).required()
+  })
+
+
   // validate
   const validate = () => {
-    let errors = {};
-    if (!form.title.trim()) errors.title = "title can`t be empty";
-    if (!form.body.trim()) errors.body = "body can`t be empyt";
-
-    // 1 -clone => ...form -- 2-edit => errors : errors -- 3-set state => setForm
-    setForm({ ...form, errors });
-
-    // return
-    return Object.keys(errors).length == 0 ? null : errors;
+    const errors = {}
+    const myForm = {...form}
+    delete myForm.errors // delete errors from the form state to avoid validation for errors
+    let result = schema.validate(myForm  , { abortEarly  : false })
+    
+    if (result.error) {
+      for (const error of result.error.details) {
+        errors[error.path] = error.message
+      }
+      setForm({...form , errors})
+      return true ;
+    } else {
+      setForm({...form , errors : {}})
+      return ;
+    }
   };
 
   // handle submit
