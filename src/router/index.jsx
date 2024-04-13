@@ -27,7 +27,7 @@ const router = createBrowserRouter(
       <Route path="*" element={<h1>Not found</h1>} />
       {/* nested route */}
       <Route path="/dashboard" element={
-        // wrap the layout only not all the routes
+        // wrap the layout component only not all the routes
         <ProtectedRoute user={user}>
           <DashboardRoot />
         </ProtectedRoute>
