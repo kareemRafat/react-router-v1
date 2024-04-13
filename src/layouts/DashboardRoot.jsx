@@ -5,7 +5,7 @@ export default function DashboardRoot() {
     <>
       <div className="container mt-5">
         <div className="row">
-          <div className="col-3">
+          <div className="col-2 d-md-block d-none">
             <ul className="list-group">
               <li className="list-group-item">
                 <NavLink to="/dashboard">Dashboard</NavLink>
