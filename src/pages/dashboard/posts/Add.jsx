@@ -1,8 +1,9 @@
+import useTitle from "components/useTitle";
 import Joi from "joi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const AddPost = () => {
+const Add = () => {
   // the call of any hook must be in the parent function scope
   // not inside any function
   let navigate = useNavigate();
@@ -18,27 +19,26 @@ const AddPost = () => {
 
   // joi schema
   const schema = Joi.object({
-    title : Joi.string().required() ,
-    body : Joi.string().min(10).required()
-  })
-
+    title: Joi.string().required(),
+    body: Joi.string().min(10).required(),
+  });
 
   // validate
   const validate = () => {
-    const errors = {}
-    const myForm = {...form}
-    delete myForm.errors // delete errors from the form state to avoid validation for errors
-    let result = schema.validate(myForm  , { abortEarly  : false })
-    
+    const errors = {};
+    const myForm = { ...form };
+    delete myForm.errors; // delete errors from the form state to avoid validation for errors
+    let result = schema.validate(myForm, { abortEarly: false });
+
     if (result.error) {
       for (const error of result.error.details) {
-        errors[error.path] = error.message
+        errors[error.path] = error.message;
       }
-      setForm({...form , errors})
-      return true ;
+      setForm({ ...form, errors });
+      return true;
     } else {
-      setForm({...form , errors : {}})
-      return ;
+      setForm({ ...form, errors: {} });
+      return;
     }
   };
 
@@ -65,6 +65,7 @@ const AddPost = () => {
     });
   };
 
+  useTitle("add post");
   return (
     <>
       <h1 className="my-4">add post form</h1>
@@ -117,4 +118,4 @@ const AddPost = () => {
   );
 };
 
-export default AddPost;
+export default Add;

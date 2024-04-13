@@ -8,11 +8,11 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import DashboardRoot from "../layouts/DashboardRoot";
 import Dashboard from "../pages/dashboard/Dashboard";
-import Users from "../pages/dashboard/Users";
-import Posts from "../pages/dashboard/Posts";
-import Post from "../pages/dashboard/Post";
+import Users from "../pages/dashboard/users/Index";
+import Posts from "../pages/dashboard/posts/Index";
+import Post from "../pages/dashboard/posts/Show";
 import ProtectedRoute from "components/ProtectedRoute";
-import AddPost from "pages/dashboard/AddPost";
+import AddPost from "pages/dashboard/posts/Add";
 
 // for Protected Routes
 // let user = null ;
