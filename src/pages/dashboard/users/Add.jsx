@@ -72,7 +72,7 @@ const Add = () => {
 
   return (
     <>
-      <h1 className="my-4">add post form</h1>
+      <h1 className="my-4">add user</h1>
       <form onSubmit={handleSubmit} className="mb-4">
         <Input inputName="name"  errors={user.errors} Change={handleChange}/>
         <Input inputName="username"  errors={user.errors} Change={handleChange}/>
