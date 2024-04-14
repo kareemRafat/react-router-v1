@@ -16,45 +16,47 @@ const Edit = () => {
 
   useTitle("Edit user");
 
-  let [user, setUser] = useState({
+  const [user, setUser] = useState({
     name: "",
     username: "",
     email: "",
-    address : {
-        street: "",
-        city: "",
+    address: {
+      street: "",
+      city: "",
     },
     company: "",
-    errors: {},
+    errors: [],
   });
 
   const { id } = useParams();
 
-  useEffect(()=> {
-    const result = async()=>{
-        try {
-            let { data } = await axios.get(`http://localhost:3000/users/${id}`)
-            console.log(data );
-            setUser({
-                ...user , 
-                ...data
-            })
-        }catch(e) {
-            navigate('/dashboard/users')
-        }
-        
-    }
+  useEffect(() => {
+    const result = async () => {
+      try {
+        let { data } = await axios.get(`http://localhost:3000/users/${id}`);
+        delete data.id
+        setUser({...user ,  ...data});
+      } catch (e) {
+        navigate("/dashboard/users");
+      }
+    };
     result();
-  } , [])
+  }, []);
 
   // joi schema
   const schema = Joi.object({
     name: Joi.string().required(),
     username: Joi.string().required(),
-    email: Joi.string().email({tlds:{allow: false}}).required(),
-    street: Joi.string().required(),
-    city: Joi.string().required(),
-    company: Joi.string().required(),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .required(),
+    address: Joi.object({
+      street: Joi.required(),
+      city: Joi.required(),
+    }),
+    company: Joi.object({
+      name: Joi.string().required(),
+    }),
   });
 
   // validate
@@ -62,6 +64,8 @@ const Edit = () => {
     const errors = {};
     const myForm = { ...user };
     delete myForm.errors; // delete errors from the form state to avoid validation for errors
+    delete myForm.id; // delete errors from the form state to avoid validation for errors
+
     let result = schema.validate(myForm, { abortEarly: false });
 
     if (result.error) {
@@ -76,7 +80,6 @@ const Edit = () => {
     }
   };
 
-
   // handle submit
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -85,23 +88,62 @@ const Edit = () => {
   };
 
   // handle change
-  const handleChange = (inputNameFromChild , value) => {
+  // todo check the update shit
+  const handleChange = (inputNameFromChild, value) => {
     setUser({
       ...user,
       [inputNameFromChild]: value,
+      company : {
+        name : value
+      },
+      address : {
+        street : value ,
+        city : value 
+      }
     });
+    console.log({[inputNameFromChild]: value});
   };
 
   return (
     <>
       <h1 className="my-4">Edit user {user.id}</h1>
       <form onSubmit={handleSubmit} className="mb-4">
-        <Input value={user.name || ''} inputName="name"  errors={user.errors} Change={handleChange}/>
-        <Input value={user.username || ''} inputName="username"  errors={user.errors} Change={handleChange}/>
-        <Input value={user.email|| ''} inputName="email" errors={user.errors} Change={handleChange}/>
-        <Input value={user.address.street|| ''} inputName="street" errors={user.errors} Change={handleChange}/>
-        <Input value={user.address.city|| ''} inputName="city" errors={user.errors} Change={handleChange}/>
-        <Input value={user.company.name|| ''} inputName="company" errors={user.errors} Change={handleChange}/>
+        <Input
+          value={user.name}
+          inputName="name"
+          errors={user.errors}
+          onChange={handleChange}
+        />
+        <Input
+          value={user.username}
+          inputName="username"
+          errors={user.errors}
+          onChange={handleChange}
+        />
+        <Input
+          value={user.email}
+          inputName="email"
+          errors={user.errors}
+          onChange={handleChange}
+        />
+        <Input
+          value={user.address.street}
+          inputName="address"
+          errors={user.errors}
+          onChange={handleChange}
+        />
+        <Input
+          value={user.address.city }
+          inputName="address"
+          errors={user.errors}
+          onChange={handleChange}
+        />
+        <Input
+          value={user.company.name }
+          inputName="company"
+          errors={user.errors}
+          onChange={handleChange}
+        />
         <button type="submit" className="btn btn-primary btn-sm">
           Submit
         </button>

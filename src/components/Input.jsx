@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-const Input = ({value,  inputName , errors , Change }) => {
+const Input = ({value,  inputName , errors , onChange }) => {
   const handleChange = (event) => {
-    Change(event.target.name , event.target.value)
+    onChange(event.target.name , event.target.value)
   }
 
   return (
@@ -11,7 +11,7 @@ const Input = ({value,  inputName , errors , Change }) => {
       </label>
       <input
         name={inputName}
-        value={value}
+        value={value || ''}
         onChange={handleChange}
         type="text"
         className="form-control"
