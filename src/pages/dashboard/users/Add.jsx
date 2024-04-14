@@ -1,6 +1,6 @@
-import Input from "components/Input";
+import Input from "components/users/Input";
+import JoiSchema from "components/users/JoiSchema";
 import useTitle from "components/useTitle";
-import Joi from "joi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -24,16 +24,8 @@ const Add = () => {
     errors: {},
   });
 
-
   // joi schema
-  const schema = Joi.object({
-    name: Joi.string().required(),
-    username: Joi.string().required(),
-    email: Joi.string().email({tlds:{allow: false}}).required(),
-    street: Joi.string().required(),
-    city: Joi.string().required(),
-    company: Joi.string().required(),
-  });
+  const schema = JoiSchema;
 
   // validate
   const validate = () => {
@@ -54,7 +46,6 @@ const Add = () => {
     }
   };
 
-
   // handle submit
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -63,7 +54,7 @@ const Add = () => {
   };
 
   // handle change
-  const handleChange = (inputNameFromChild , value) => {
+  const handleChange = (inputNameFromChild, value) => {
     setUser({
       ...user,
       [inputNameFromChild]: value,
@@ -74,12 +65,16 @@ const Add = () => {
     <>
       <h1 className="my-4">add user</h1>
       <form onSubmit={handleSubmit} className="mb-4">
-        <Input inputName="name"  errors={user.errors} Change={handleChange}/>
-        <Input inputName="username"  errors={user.errors} Change={handleChange}/>
-        <Input inputName="email" errors={user.errors} Change={handleChange}/>
-        <Input inputName="street" errors={user.errors} Change={handleChange}/>
-        <Input inputName="city" errors={user.errors} Change={handleChange}/>
-        <Input inputName="company" errors={user.errors} Change={handleChange}/>
+        <Input inputName="name" errors={user.errors} Change={handleChange} />
+        <Input
+          inputName="username"
+          errors={user.errors}
+          Change={handleChange}
+        />
+        <Input inputName="email" errors={user.errors} Change={handleChange} />
+        <Input inputName="street" errors={user.errors} Change={handleChange} />
+        <Input inputName="city" errors={user.errors} Change={handleChange} />
+        <Input inputName="company" errors={user.errors} Change={handleChange} />
         <button type="submit" className="btn btn-primary btn-sm">
           Submit
         </button>

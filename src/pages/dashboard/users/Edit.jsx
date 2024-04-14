@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
-import Input from "components/Input";
+import Input from "components/users/Input";
+import JoiSchema from "components/users/JoiSchema";
 import useTitle from "components/useTitle";
-import Joi from "joi";
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 
 const Edit = () => {
   // the call of any hook must be in the parent function scope
@@ -34,8 +36,8 @@ const Edit = () => {
     const result = async () => {
       try {
         let { data } = await axios.get(`http://localhost:3000/users/${id}`);
-        delete data.id
-        setUser({...user ,  ...data});
+        delete data.id;
+        setUser({ ...user, ...data });
       } catch (e) {
         navigate("/dashboard/users");
       }
@@ -44,20 +46,7 @@ const Edit = () => {
   }, []);
 
   // joi schema
-  const schema = Joi.object({
-    name: Joi.string().required(),
-    username: Joi.string().required(),
-    email: Joi.string()
-      .email({ tlds: { allow: false } })
-      .required(),
-    address: Joi.object({
-      street: Joi.required(),
-      city: Joi.required(),
-    }),
-    company: Joi.object({
-      name: Joi.string().required(),
-    }),
-  });
+  const schema = JoiSchema
 
   // validate
   const validate = () => {
@@ -87,21 +76,42 @@ const Edit = () => {
     return validate() ? "" : console.log("submit");
   };
 
-  // handle change
-  // todo check the update shit
+  // Update user state based on input
   const handleChange = (inputNameFromChild, value) => {
-    setUser({
-      ...user,
-      [inputNameFromChild]: value,
-      company : {
-        name : value
-      },
-      address : {
-        street : value ,
-        city : value 
+    setUser((prevUser) => {
+      if (inputNameFromChild === "street") {
+        return {
+          ...prevUser,
+          address: {
+            ...prevUser.address,
+            street: value,
+          },
+        };
       }
+      if (inputNameFromChild === "city") {
+        return {
+          ...prevUser,
+          address: {
+            ...prevUser.address,
+            city: value,
+          },
+        };
+      }
+      if (inputNameFromChild === "company") {
+        return {
+          ...prevUser,
+          company: {
+            name: value,
+          },
+        };
+      }
+      // If inputNameFromChild doesn't match any case, return previous state
+      // return prevUser;
+      return {
+        ...prevUser,
+        [inputNameFromChild]: value,
+      };
     });
-    console.log({[inputNameFromChild]: value});
   };
 
   return (
@@ -128,18 +138,18 @@ const Edit = () => {
         />
         <Input
           value={user.address.street}
-          inputName="address"
+          inputName="street"
           errors={user.errors}
           onChange={handleChange}
         />
         <Input
-          value={user.address.city }
-          inputName="address"
+          value={user.address.city}
+          inputName="city"
           errors={user.errors}
           onChange={handleChange}
         />
         <Input
-          value={user.company.name }
+          value={user.company.name}
           inputName="company"
           errors={user.errors}
           onChange={handleChange}

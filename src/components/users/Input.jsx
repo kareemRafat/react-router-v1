@@ -4,6 +4,20 @@ const Input = ({value,  inputName , errors , onChange }) => {
     onChange(event.target.name , event.target.value)
   }
 
+  const handleErrors = () => {
+
+    if (inputName == 'city') {
+       return errors['address,city']
+    } else if (inputName == 'street') {
+      return errors['address,street']
+    }else if (inputName == 'company') {
+      return errors['company,name']
+    } else {
+      return errors[inputName]
+    }
+    
+  }
+
   return (
     <div className="mb-3">
       <label htmlFor="forname" className="form-label">
@@ -19,7 +33,7 @@ const Input = ({value,  inputName , errors , onChange }) => {
         aria-describedby="titleHelp"
       />
       <div id="titleHelp" className="form-text text-danger fw-bold">
-        {errors[inputName]}
+        {handleErrors()}
       </div>
     </div>
   );
