@@ -14,14 +14,16 @@ const Add = () => {
 
   useTitle("add user");
 
-  let [user, setUser] = useState({
+  const [user, setUser] = useState({
     name: "",
     username: "",
     email: "",
-    street: "",
-    city: "",
+    address: {
+      street: "",
+      city: "",
+    },
     company: "",
-    errors: {},
+    errors: [],
   });
 
   // joi schema
@@ -55,9 +57,45 @@ const Add = () => {
 
   // handle change
   const handleChange = (inputNameFromChild, value) => {
-    setUser({
-      ...user,
-      [inputNameFromChild]: value,
+    setUser((prevUser) => {
+      if (inputNameFromChild === "street") {
+        return {
+          // clone ther previous user and add address object
+          ...prevUser,
+          address: {
+            // clone the previous user address and add street to it
+            ...prevUser.address,
+            street: value,
+          },
+        };
+      }
+      if (inputNameFromChild === "city") {
+        return {
+           // clone ther previous user and add address object
+          ...prevUser,
+          address: {
+            // clone the previous user address and add city to it
+            ...prevUser.address,
+            city: value,
+          },
+        };
+      }
+      if (inputNameFromChild === "company") {
+        return {
+          // clone ther previous user and add company object
+          ...prevUser,
+          company: {
+            name: value,
+          },
+        };
+      }
+      // If inputNameFromChild doesn't match any case, return previous state
+      // return prevUser;
+      return {
+        // clone ther previous user and add {inputNameFromChild:input.value} object
+        ...prevUser,
+        [inputNameFromChild]: value,
+      };
     });
   };
 
@@ -65,16 +103,42 @@ const Add = () => {
     <>
       <h1 className="my-4">add user</h1>
       <form onSubmit={handleSubmit} className="mb-4">
-        <Input inputName="name" errors={user.errors} Change={handleChange} />
         <Input
+          value={user.name}
+          inputName="name"
+          errors={user.errors}
+          onChange={handleChange}
+        />
+        <Input
+          value={user.username}
           inputName="username"
           errors={user.errors}
-          Change={handleChange}
+          onChange={handleChange}
         />
-        <Input inputName="email" errors={user.errors} Change={handleChange} />
-        <Input inputName="street" errors={user.errors} Change={handleChange} />
-        <Input inputName="city" errors={user.errors} Change={handleChange} />
-        <Input inputName="company" errors={user.errors} Change={handleChange} />
+        <Input
+          value={user.email}
+          inputName="email"
+          errors={user.errors}
+          onChange={handleChange}
+        />
+        <Input
+          value={user.address.street}
+          inputName="street"
+          errors={user.errors}
+          onChange={handleChange}
+        />
+        <Input
+          value={user.address.city}
+          inputName="city"
+          errors={user.errors}
+          onChange={handleChange}
+        />
+        <Input
+          value={user.company.name}
+          inputName="company"
+          errors={user.errors}
+          onChange={handleChange}
+        />
         <button type="submit" className="btn btn-primary btn-sm">
           Submit
         </button>
