@@ -53,8 +53,8 @@ export default function Index() {
                 <td>{user.company.name}</td>
                 <td>
                   <div className="btn btn-group">
-                    <button className="btn btn-primary btn-sm">Edit</button>
-                    <button className="btn btn-danger btn-sm">Delete</button>
+                    <Link to={`${user.id}/edit`} className="btn btn-primary btn-sm">Edit</Link>
+                    <Link className="btn btn-danger btn-sm">Delete</Link>
                   </div>
                 </td>
               </tr>

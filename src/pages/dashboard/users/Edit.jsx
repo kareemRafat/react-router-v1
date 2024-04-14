@@ -1,10 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import axios from "axios";
 import Input from "components/Input";
 import useTitle from "components/useTitle";
 import Joi from "joi";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-const Add = () => {
+const Edit = () => {
   // the call of any hook must be in the parent function scope
   // not inside any function
   let navigate = useNavigate();
@@ -12,18 +14,33 @@ const Add = () => {
     navigate("/dashboard/posts");
   };
 
-  useTitle("add user");
+  useTitle("Edit user");
 
   let [user, setUser] = useState({
     name: "",
     username: "",
     email: "",
-    street: "",
-    city: "",
+    address : {
+        street: "",
+        city: "",
+    },
     company: "",
     errors: {},
   });
 
+  const { id } = useParams();
+
+  // edit if id 
+  useEffect(()=> {
+    const result = async()=>{
+        let { data } = await axios.get(`http://localhost:3000/users/${id}`)
+        setUser({
+            ...user , 
+            ...data
+        })
+    }
+    result();
+  } , [])
 
   // joi schema
   const schema = Joi.object({
@@ -74,12 +91,12 @@ const Add = () => {
     <>
       <h1 className="my-4">add post form</h1>
       <form onSubmit={handleSubmit} className="mb-4">
-        <Input inputName="name"  errors={user.errors} Change={handleChange}/>
-        <Input inputName="username"  errors={user.errors} Change={handleChange}/>
-        <Input inputName="email" errors={user.errors} Change={handleChange}/>
-        <Input inputName="street" errors={user.errors} Change={handleChange}/>
-        <Input inputName="city" errors={user.errors} Change={handleChange}/>
-        <Input inputName="company" errors={user.errors} Change={handleChange}/>
+        <Input value={user.name} inputName="name"  errors={user.errors} Change={handleChange}/>
+        <Input value={user.username} inputName="username"  errors={user.errors} Change={handleChange}/>
+        <Input value={user.email} inputName="email" errors={user.errors} Change={handleChange}/>
+        <Input value={user.address.street} inputName="street" errors={user.errors} Change={handleChange}/>
+        <Input value={user.address.city} inputName="city" errors={user.errors} Change={handleChange}/>
+        <Input value={user.company.name} inputName="company" errors={user.errors} Change={handleChange}/>
         <button type="submit" className="btn btn-primary btn-sm">
           Submit
         </button>
@@ -94,4 +111,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default Edit;

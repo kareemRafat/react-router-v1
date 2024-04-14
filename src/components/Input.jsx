@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const Input = ({ user, inputName , errors , Change }) => {
+const Input = ({value,  inputName , errors , Change }) => {
   const handleChange = (event) => {
     Change(event.target.name , event.target.value)
   }
@@ -11,11 +11,11 @@ const Input = ({ user, inputName , errors , Change }) => {
       </label>
       <input
         name={inputName}
-        value={user.inputName}
+        value={value}
         onChange={handleChange}
         type="text"
         className="form-control"
-        id={`for${name}`}
+        id={`for${inputName}`}
         aria-describedby="titleHelp"
       />
       <div id="titleHelp" className="form-text text-danger fw-bold">
