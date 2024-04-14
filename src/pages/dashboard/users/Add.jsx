@@ -22,7 +22,9 @@ const Add = () => {
       street: "",
       city: "",
     },
-    company: "",
+    company: {
+      name : ""
+    },
     errors: [],
   });
 

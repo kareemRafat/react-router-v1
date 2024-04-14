@@ -3,11 +3,16 @@ import Joi from "joi";
 const JoiSchema = Joi.object({
   name: Joi.string()
     .required()
-    .messages({ "string.empty": "name can`t be empty" }),
-  username: Joi.string().required(),
+    .messages({ "string.empty": "Name is required" }),
+  username: Joi.string().required().messages({
+    "string.empty": "Username is required.",
+  }),
   email: Joi.string()
     .email({ tlds: { allow: false } })
-    .required(),
+    .required().messages({
+      "string.empty": "Email is required.",
+      "string.email" : "Email must be a valid email"
+    }),
   address: Joi.object().keys({
     street: Joi.string().required().messages({
       "string.empty": "Street is required.",

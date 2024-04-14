@@ -7,7 +7,6 @@ import useTitle from "components/useTitle";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-
 const Edit = () => {
   // the call of any hook must be in the parent function scope
   // not inside any function
@@ -26,7 +25,9 @@ const Edit = () => {
       street: "",
       city: "",
     },
-    company: "",
+    company: {
+      name: "",
+    },
     errors: [],
   });
 
@@ -46,7 +47,7 @@ const Edit = () => {
   }, []);
 
   // joi schema
-  const schema = JoiSchema
+  const schema = JoiSchema;
 
   // validate
   const validate = () => {
