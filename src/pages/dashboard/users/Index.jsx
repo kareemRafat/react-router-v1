@@ -11,7 +11,8 @@ export default function Index() {
   let incId = 0;
 
   const [users, setUsers] = useState([]);
-  // const [userId, setUserId] = useState(0);
+  const [userId, setUserId] = useState(0);
+  const [username , setUsername] = useState('');
 
   // fetch the users from json.db json-server
   useEffect(() => {
@@ -79,7 +80,7 @@ export default function Index() {
               <tr key={user.id}>
                 <td>{++incId}</td>
                 <td>{user.name}</td>
-                <td>{user.username}</td>
+                <td className="text-primary">{user.username}</td>
                 <td>{user.email}</td>
                 <td>{user.address.street}</td>
                 <td>{user.address.city}</td>
@@ -96,18 +97,23 @@ export default function Index() {
                       type="button"
                       className="btn btn-danger btn-sm"
                       data-bs-toggle="modal"
-                      data-bs-target={`#deleteModal_${user.id}`}
+                      data-bs-target="#deleteModal"
+                      onClick={() => {
+                        setUserId(user.id)
+                        setUsername(user.username)
+                      }}
                     >
                       Delete
                     </button>
                   </div>
-                  <Modal id={user.id} onDelete={deleteUser} />
+                  
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+      <Modal name={username} id={userId} onDelete={deleteUser} />
     </>
   );
 }

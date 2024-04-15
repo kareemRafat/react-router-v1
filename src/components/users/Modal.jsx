@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
-const Modal = ({ id, onDelete }) => {
+const Modal = ({ id, name , onDelete }) => {
   return (
     <>
-      {/* modal */}
       <div
         className="modal fade"
-        id={`deleteModal_${id}`}
+        id="deleteModal"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -23,7 +22,9 @@ const Modal = ({ id, onDelete }) => {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body">...</div>
+            <div className="modal-body">
+                <p>are you sure you want to delete <span className="text-danger fw-bold">{name}</span></p>
+            </div>
             <div className="modal-footer">
               <button
                 type="button"
