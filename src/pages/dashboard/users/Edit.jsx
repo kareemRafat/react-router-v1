@@ -12,9 +12,6 @@ const Edit = () => {
   // the call of any hook must be in the parent function scope
   // not inside any function
   let navigate = useNavigate();
-  let backToPosts = () => {
-    navigate("/dashboard/posts");
-  };
 
   useTitle("Edit user");
 
@@ -169,7 +166,7 @@ const Edit = () => {
         </button>
       </form>
       <button
-        onClick={backToPosts}
+        onClick={() => navigate("/dashboard/users")}
         className="btn btn-warning btn-sm text-light"
       >
         back

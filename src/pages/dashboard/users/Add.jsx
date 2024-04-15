@@ -10,9 +10,6 @@ const Add = () => {
   // the call of any hook must be in the parent function scope
   // not inside any function
   let navigate = useNavigate();
-  let backToPosts = () => {
-    navigate("/dashboard/posts");
-  };
 
   useTitle("add user");
 
@@ -156,7 +153,7 @@ const Add = () => {
         </button>
       </form>
       <button
-        onClick={backToPosts}
+        onClick={() => navigate("/dashboard/users")}
         className="btn btn-warning btn-sm text-light"
       >
         back
