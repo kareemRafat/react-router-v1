@@ -5,6 +5,7 @@ import JoiSchema from "components/users/JoiSchema";
 import useTitle from "components/useTitle";
 
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Edit = () => {
@@ -70,11 +71,19 @@ const Edit = () => {
     }
   };
 
+  // update data to database
+  const update = (data) => {
+    delete data.errors;
+    axios.patch("http://localhost:3000/users/" + id, data);
+    toast.success("user updated successfully" , { duration : 5000});
+    navigate("/dashboard/users");
+  };
+
   // handle submit
   const handleSubmit = (event) => {
     event.preventDefault();
-    // return nothing if validate == true and there`s errors otherwise log(submit)
-    return validate() ? "" : console.log("submit");
+    // return nothing if validate == true and there`s errors otherwise update
+    return validate() || update(user);
   };
 
   // Update user state based on input

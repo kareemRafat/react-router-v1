@@ -1,7 +1,9 @@
+import axios from "axios";
 import Input from "components/users/Input";
 import JoiSchema from "components/users/JoiSchema";
 import useTitle from "components/useTitle";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const Add = () => {
@@ -50,11 +52,19 @@ const Add = () => {
     }
   };
 
+  // add data to database
+  const insert = (data) => {
+    delete data.errors
+    axios.post('http://localhost:3000/users' , data);
+    toast.success('user added successfully');
+    navigate("/dashboard/users");
+  }
+
   // handle submit
   const handleSubmit = (event) => {
     event.preventDefault();
-    // return nothing if validate == true and there`s errors otherwise log(submit)
-    return validate() ? "" : console.log("submit");
+    // return nothing if validate == true and there`s errors otherwise insert
+    return validate() || insert(user) ;
   };
 
   // handle change

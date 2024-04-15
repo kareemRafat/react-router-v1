@@ -1,15 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import useTitle from "components/useTitle";
+import Modal from "components/users/Modal";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 export default function Index() {
   useTitle("users");
-  let incId = 0 ;
+  let incId = 0;
 
   const [users, setUsers] = useState([]);
+  // const [userId, setUserId] = useState(0);
 
   // fetch the users from json.db json-server
   useEffect(() => {
@@ -22,26 +24,40 @@ export default function Index() {
   }, []);
   // dependancy array empty because this will happen once - component amount
 
-  // delete user 
-  const deleteUser = (id) => {
+  // delete user
+  const deleteUser = async (id) => {
+    // using optimistic update
+    // 1 - first we store the old user state in variable
+    // 2 - then update the ui first
+    // 3 - then update or delete from the database
+    // 4 - if error fires return the state to original state
+    const oldUser = [...users];
+
     // update ui by modifing the state
-    setUsers(users.filter(user => user.id !== id ))
+    setUsers(users.filter((user) => user.id !== id));
 
-    // update database
+    try {
+      // update database
+      await axios.delete("http://localhost:3000/users/" + id);
 
-    toast.success('user deleted successfully' , {
-      style : {
-        marginTop : '5px'
-      }
-    })
-  }
+      toast.success("user deleted successfully");
+    } catch (err) {
+      toast.error("can`t delete the user");
+      setUsers(oldUser);
+    }
+  };
 
   return (
     <>
       <div>
         <div className="d-flex justify-content-between">
           <h1>Users Page</h1>
-          <Link to="add" className="btn btn-info btn-sm align-self-center text-light fw-bold">add user</Link>
+          <Link
+            to="add"
+            className="btn btn-info btn-sm align-self-center text-light fw-bold"
+          >
+            add user
+          </Link>
         </div>
       </div>
       <table className="table table-hover table-bordered table-striped mt-4 table-sm">
@@ -58,7 +74,6 @@ export default function Index() {
           </tr>
         </thead>
         <tbody>
-
           {users.map((user) => {
             return (
               <tr key={user.id}>
@@ -71,9 +86,22 @@ export default function Index() {
                 <td>{user.company.name}</td>
                 <td>
                   <div className="btn btn-group">
-                    <Link to={`${user.id}/edit`} className="btn btn-primary btn-sm">Edit</Link>
-                    <button onClick={() => deleteUser(user.id)} className="btn btn-danger btn-sm">Delete</button>
+                    <Link
+                      to={`${user.id}/edit`}
+                      className="btn btn-primary btn-sm"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                      data-bs-toggle="modal"
+                      data-bs-target={`#deleteModal_${user.id}`}
+                    >
+                      Delete
+                    </button>
                   </div>
+                  <Modal id={user.id} onDelete={deleteUser} />
                 </td>
               </tr>
             );
