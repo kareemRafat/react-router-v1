@@ -15,13 +15,12 @@ const Show = () => {
           `http://localhost:3000/users/${id}`
         );
         setUser(data);
-        console.log(data.company.name);
       } catch (e) {
         navigate("/dashboard/users");
       }
     };
     result();
-  }, []);
+  }, [id, navigate]);
 
   return (
     <div className="card">
