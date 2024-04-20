@@ -15,6 +15,7 @@ import ProtectedRoute from "components/ProtectedRoute";
 import AddPost from "pages/dashboard/posts/Add";
 import Add from "pages/dashboard/users/Add";
 import Edit from "pages/dashboard/users/Edit";
+import Show from "pages/dashboard/users/Show";
 
 // for Protected Routes
 // let user = null ;
@@ -36,9 +37,12 @@ const router = createBrowserRouter(
         </ProtectedRoute>
       }>
         <Route index element={<Dashboard />} />
+        {/* users */}
         <Route path="users" element={<Users />} />
         <Route path="users/add" element={<Add />} />
+        <Route path="users/:id" element={<Show />} />
         <Route path="users/:id/edit" element={<Edit />} />
+        {/* posts */}
         <Route path="posts" element={<Posts />} />
         <Route path="posts/:id" element={<Post />} />
         <Route path="posts/add" element={<AddPost />} />

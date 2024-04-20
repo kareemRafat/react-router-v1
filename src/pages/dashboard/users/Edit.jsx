@@ -52,6 +52,7 @@ const Edit = () => {
     const errors = {};
     const myForm = { ...user };
     delete myForm.errors; // delete errors from the form state to avoid validation for errors
+    // @ts-ignore
     delete myForm.id; // delete errors from the form state to avoid validation for errors
 
     let result = schema.validate(myForm, { abortEarly: false });
@@ -60,9 +61,11 @@ const Edit = () => {
       for (const error of result.error.details) {
         errors[error.path] = error.message;
       }
+      // @ts-ignore
       setUser({ ...user, errors });
       return true;
     } else {
+      // @ts-ignore
       setUser({ ...user, errors: {} });
       return;
     }
@@ -123,7 +126,9 @@ const Edit = () => {
 
   return (
     <>
-      <h1 className="my-4">Edit user {user.id}</h1>
+      <h1 className="my-4">Edit user {user.
+// @ts-ignore
+      id}</h1>
       <form onSubmit={handleSubmit} className="mb-4">
         <Input
           value={user.name}

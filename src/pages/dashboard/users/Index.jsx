@@ -79,7 +79,9 @@ export default function Index() {
             return (
               <tr key={user.id}>
                 <td>{++incId}</td>
-                <td>{user.name}</td>
+                <td>
+                  <Link to={`${user.id}`}>{user.name}</Link>
+                </td>
                 <td className="text-primary">{user.username}</td>
                 <td>{user.email}</td>
                 <td>{user.address.street}</td>
